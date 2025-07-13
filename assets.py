@@ -21,4 +21,9 @@ PHOTO_PATHS = {
     "signal_hunt": "photos/signal_hunt.jpg",
     "green_corridor": "photos/green_corridor.jpg",
     "dramtheater_after.jpg": "photos/dramtheater_after.jpg",
+    # Нові фото
+    "m_sign": "photos/m_sign.jpeg",
+    "rumors_radio": "photos/rumors_radio.jpg",
+    "wounded_neighbor": "photos/wounded_neighbor.jpg",
 }
+

@@ -60,7 +60,6 @@ async def stage_day5(query):
     ]
     await send_stage(query, text, keyboard)
 
-# НОВА СЦЕНА
 async def stage_signal_hunt(query):
     text = "<b>День 9 — 6 березня</b>\n\nЗв'язку немає зовсім. Але містом шириться чутка, що біля ТЦ 'Порт-Сіті' іноді з'являється слабкий сигнал. Це шанс подзвонити рідним, але йти туди — величезний ризик."
     await send_photo_from_path(query.message, assets.PHOTO_PATHS['signal_hunt'], "Люди відчайдушно намагаються зловити сигнал.")
@@ -71,12 +70,41 @@ async def stage_signal_hunt(query):
     ]
     await send_stage(query, text, keyboard)
 
+async def stage_m_sign(query):
+    text = "<b>День 11 — 8 березня</b>\n\nСусід пропонує намалювати на стіні будинку велику літеру 'М', щоб позначити, що тут мирні жителі. Дехто каже, що це може врятувати, інші — що це лише приверне увагу мародерів або стане мішенню для росіян, які не розбирають."
+    await send_photo_from_path(query.message, assets.PHOTO_PATHS['m_sign'], "Позначка, що мала б рятувати.")
+    keyboard = [
+        [InlineKeyboardButton("👍 Погодитись і допомогти намалювати", callback_data='act_msign_draw')],
+        [InlineKeyboardButton("👎 Відмовитися. Це погана ідея", callback_data='act_msign_refuse')],
+    ]
+    await send_stage(query, text, keyboard)
+
+# НОВА СЦЕНА
+async def stage_day12_respite(query):
+    text = "<b>День 12 — 9 березня</b>\n\nНастала тимчасова, моторошна тиша. Обстріли стихли. Це рідкісний шанс зробити щось важливе для виживання."
+    keyboard = [
+        [InlineKeyboardButton("📲 Почистити телефон від 'небезпечного' контенту", callback_data='act_day12_clean')],
+        [InlineKeyboardButton("😴 Спробувати поспати, відновити сили", callback_data='act_day12_sleep')],
+        [InlineKeyboardButton("🍲 Ризикнути і пошукати їжу в покинутих квартирах", callback_data='act_day12_food')],
+    ]
+    await send_stage(query, text, keyboard)
+
 async def stage_day13(query):
     text = "<b>День 13 — 9 березня</b>\n\nГучний свист, вибух. Скинули авіабомбу на пологовий. У під'їзді ховається молода жінка, яка мала народжувати там. Вона мовчки плаче."
     keyboard = [
         [InlineKeyboardButton("🫂 Обійняти її і сидіти поруч", callback_data='act_day13_hug')],
         [InlineKeyboardButton("☕ Заварити їй останній чай", callback_data='act_day13_tea')],
         [InlineKeyboardButton("🤬 Висловити свій гнів і безсилля", callback_data='act_day13_rage')],
+    ]
+    await send_stage(query, text, keyboard)
+
+async def stage_wounded_neighbor(query):
+    text = "<b>День 15 — 11 березня</b>\n\nПід час чергового обстрілу уламок поранив вашого сусіда в ногу. Крові багато. Він просить допомоги. У вас є трохи перев'язувальних матеріалів з аптечки та чиста вода, але це майже останні ваші запаси."
+    await send_photo_from_path(query.message, assets.PHOTO_PATHS['wounded_neighbor'], "Кожен вибір має ціну.")
+    keyboard = [
+        [InlineKeyboardButton("🩹 Віддати все і допомогти", callback_data='act_wounded_help')],
+        [InlineKeyboardButton("💧 Дати лише трохи води", callback_data='act_wounded_little')],
+        [InlineKeyboardButton("🤐 Сказати, що у вас нічого немає", callback_data='act_wounded_refuse')],
     ]
     await send_stage(query, text, keyboard)
 
@@ -91,6 +119,10 @@ async def stage_dramatheater(query):
     ]
     await send_stage(query, text, keyboard)
 
+async def show_dramatheater_after(query):
+    """Надсилає фото розбомбленого театру."""
+    await send_photo_from_path(query.message, assets.PHOTO_PATHS['dramtheater_after'])
+
 async def stage_day18(query):
     text = "<b>День 18 — 14 березня</b>\n\nВода закінчилася. Повна знемога. Люди зливають залишки з труб опалення, збирають воду з калюж. Єдиний шанс — розтопити брудний сніг у дворі або спуститись у темний підвал."
     keyboard = [
@@ -100,7 +132,6 @@ async def stage_day18(query):
     ]
     await send_stage(query, text, keyboard)
 
-# НОВА СЦЕНА
 async def stage_green_corridor(query):
     text = "<b>21 березня.</b>\n\nЗ'являється інформація про 'зелений коридор' для евакуації. Люди формують колони, маркують машини білими стрічками та написами 'ДІТИ'. Але чи можна вірити окупантам?"
     await send_photo_from_path(query.message, assets.PHOTO_PATHS['green_corridor'], "Дорога, що мала стати порятунком.")
@@ -110,11 +141,10 @@ async def stage_green_corridor(query):
         [InlineKeyboardButton(" distrust Залишитися. Це пастка", callback_data='act_corridor_stay')],
     ]
     await send_stage(query, text, keyboard)
-
-# ... (всі інші функції stage_* залишаються такими ж) ...
-# Я додав повний код, щоб ви могли просто скопіювати весь файл.
+    
+# ОНОВЛЕНА СЦЕНА
 async def stage_day25(query):
-    text = "<b>День 25 — 21 березня</b>\n\nВуличні бої. Твій будинок горить після влучання. Треба тікати. Дехто каже, що треба пов'язати білі стрічки на одяг, щоб показати, що ти цивільний."
+    text = "<b>День 25 — 21 березня</b>\n\nВуличні бої. Твій район перетворився на лінію фронту. Ти чуєш російську мову зовсім поруч. Твій будинок починає горіти після влучання снаряда. Треба тікати."
     keyboard = [
         [InlineKeyboardButton("🏃 Через дах на сусідній будинок", callback_data='act_day25_roof')],
         [InlineKeyboardButton("💨 Через задимлений під'їзд (з білою стрічкою)", callback_data='act_day25_entrance')],
@@ -168,12 +198,42 @@ async def stage_filtration2(query):
     ]
     await send_stage(query, text, keyboard)
 
+# СЦЕНУ З ТАТУ ВИДАЛЕНО
+
+async def stage_filtration10(query):
+    text = "<b>Офіцер:</b> 'Чим ви займались у Маріуполі?'"
+    keyboard = [
+        [InlineKeyboardButton("🗣️ Працював(ла) в школі", callback_data='act_filtration10_teacher')],
+        [InlineKeyboardButton("🗣️ Був(ла) безробітним(ою)", callback_data='act_filtration10_unemployed')],
+        [InlineKeyboardButton("🗣️ Волонтерив(ла)", callback_data='act_filtration10_volunteer')],
+    ]
+    await send_stage(query, text, keyboard)
+
+async def stage_filtration11(query):
+    text = "<b>Офіцер:</b> 'Чи маєте акаунти в соцмережах?'"
+    keyboard = [
+        [InlineKeyboardButton("🗣️ Ні", callback_data='act_filtration11_no')],
+        [InlineKeyboardButton("🗣️ Так, але не публікую нічого", callback_data='act_filtration11_passive')],
+        [InlineKeyboardButton("🗣️ Так, я писав(ла) про війну", callback_data='act_filtration11_active')],
+    ]
+    await send_stage(query, text, keyboard)
+
 async def stage_filtration3(query):
     text = "<b>Офіцер:</b> 'Як ставитеся до проведення СВО?'"
     keyboard = [
         [InlineKeyboardButton("🗣️ 'Я не розбираюся в політиці'", callback_data='act_filtration3_apolitical')],
         [InlineKeyboardButton("🗣️ 'Це трагедія для всіх нас'", callback_data='act_filtration3_tragedy')],
         [InlineKeyboardButton("🗣️ 'Ви зруйнували моє місто'", callback_data='act_filtration3_truth')],
+    ]
+    await send_stage(query, text, keyboard)
+
+async def stage_filtration_pressure(query):
+    text = "<b>Офіцер (пильно дивлячись):</b> 'Чому не поїхали в росію? Там безпечно, вам би допомогли. В Україні на вас ніхто не чекає.'"
+    keyboard = [
+        # Змінюємо 'filtration_pressure' на 'filtrationpressure'
+        [InlineKeyboardButton("🗣️ 'Там вся моя родина'", callback_data='act_filtrationpressure_family')],
+        [InlineKeyboardButton("🗣️ 'Я боявся їхати в невідомість'", callback_data='act_filtrationpressure_scared')],
+        [InlineKeyboardButton("🗣️ 'Бо росія - ворог'", callback_data='act_filtrationpressure_enemy')],
     ]
     await send_stage(query, text, keyboard)
 
