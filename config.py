@@ -2,12 +2,19 @@
 import os
 from dotenv import load_dotenv
 
-# Завантажує змінні з файлу .env в оточення
+# Завантажує змінні з .env
 load_dotenv()
 
-# Беремо токен з оточення. Якщо його там немає, повертається None.
+# Токен бота
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-
-# Перевірка, чи токен взагалі існує
 if not TELEGRAM_TOKEN:
-    raise ValueError("Не знайдено токен! Перевірте ваш .env файл або налаштування оточення.")
+    raise ValueError("Не знайдено TELEGRAM_TOKEN у .env!")
+
+# ID адміністратора
+ADMIN_ID = os.getenv("ADMIN_ID")
+if not ADMIN_ID:
+    raise ValueError("Не знайдено ADMIN_ID у .env!")
+ADMIN_ID = int(ADMIN_ID)  # Перетворюємо з рядка на int
+
+# Увімкнення повідомлень при старті
+NOTIFY_ON_START = os.getenv("NOTIFY_ON_START", "false").lower() == "true"

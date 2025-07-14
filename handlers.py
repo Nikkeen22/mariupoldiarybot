@@ -1,5 +1,6 @@
 # handlers.py
-
+from config import ADMIN_ID
+import os
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
 
@@ -7,6 +8,37 @@ from telegram.ext import ContextTypes
 import stages
 import state_manager
 import assets
+
+NOTIFY_FILE = "notify.flag"
+
+
+def get_notify():
+    try:
+        with open(NOTIFY_FILE) as f:
+            return f.read().strip() == "on"
+    except FileNotFoundError:
+        return False
+    
+def set_notify(value: bool):
+    with open(NOTIFY_FILE, "w") as f:
+        f.write("on" if value else "off")
+
+
+
+async def notify_on(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if str(update.effective_user.id) != str(ADMIN_ID):
+        return
+    set_notify(True)
+    await update.message.reply_text("✅ Сповіщення адміну увімкнено.")
+
+async def notify_off(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if str(update.effective_user.id) != str(ADMIN_ID):
+        return
+    set_notify(False)
+    await update.message.reply_text("🚫 Сповіщення адміну вимкнено.")
+
+
+
 
 async def handle_choice(query, text_response, health=0, resources=0, relationships=0, hope=0, suspicion=0):
     """Універсальна функція для обробки вибору та оновлення стану."""
@@ -20,6 +52,18 @@ async def handle_choice(query, text_response, health=0, resources=0, relationshi
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Надсилає вступне повідомлення, відео та кнопку для старту."""
     user = update.effective_user
+
+    # 🟡 ДОДАНО: Сповіщення адміну
+    if get_notify():
+        try:
+            await context.bot.send_message(
+                chat_id=ADMIN_ID,
+                text=f"👤 Користувач @{user.username or '-'} (ID: {user.id}) запустив бота."
+            )
+        except Exception as e:
+            print(f"[Помилка надсилання адміну] {e}")
+
+    # ⬇️ Далі йде твоя логіка
     state_manager.reset_user_state(user.id)
     
     disclaimer_text = (

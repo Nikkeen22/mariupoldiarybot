@@ -8,6 +8,10 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler
 from config import TELEGRAM_TOKEN
 from handlers import start, new_game, status, button_handler
 from state_manager import load_states
+from handlers import notify_on, notify_off
+
+
+
 
 # Налаштування логування
 logging.basicConfig(
@@ -37,6 +41,8 @@ def main() -> None:
 
     # Реєструємо головний обробник для всіх натискань на кнопки
     application.add_handler(CallbackQueryHandler(button_handler))
+    application.add_handler(CommandHandler("notify_on", notify_on))
+    application.add_handler(CommandHandler("notify_off", notify_off))
 
     logger.info("Bot is starting...")
     application.run_polling()
